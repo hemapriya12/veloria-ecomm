@@ -1,0 +1,155 @@
+[
+  {
+    "id": "11192ba4-a2ff-4a61-823b-0dee43b651c1",
+    "firstName": "Admin",
+    "lastName": "User",
+    "email": "admin@example.com",
+    "passwordHash": "$2a$10$bPCCDk0T21GjjHp4utlKcuYnYaC1rY.xIZs6l8ZGsI0p5yLOHPShK",
+    "role": "seller",
+    "createdAt": "2026-05-27T18:53:59.630Z"
+  },
+  {
+    "id": "5239ea01-bb70-440e-a20b-f5f3071087d3",
+    "firstName": "Seller",
+    "lastName": "Seller",
+    "email": "seller@gmail.com",
+    "passwordHash": "$2a$10$3XuQRATruKxbj6oIbdPStuT7qnHlmVK2EGyZsvfyo6u2hI1JqKwoi",
+    "role": "seller",
+    "createdAt": "2026-06-01T02:55:42.163Z"
+  },
+  {
+    "id": "e0c5aebe-668f-494b-933f-51d744607701",
+    "firstName": "Buyer",
+    "lastName": "Buyer",
+    "email": "buyer@gmail.com",
+    "passwordHash": "$2a$10$3O1xAZjv58oRVsKvpOvAQeXGuw9JmQ8NzKXq4SY.WKm6IOxB5KVyi",
+    "role": "user",
+    "createdAt": "2026-06-01T05:04:49.753Z"
+  },
+  {
+    "id": "79170d9e-e18b-4820-8ab6-39d3d8367696",
+    "firstName": "abcd",
+    "lastName": "Buyer",
+    "email": "abcd@gmail.com",
+    "passwordHash": "$2a$10$4RE1Jvz0wlhUYBKqG3JtkeESpDzihe/Hc4mAGq/mL7X37zJD61CHK",
+    "role": "user",
+    "createdAt": "2026-06-18T15:26:36.037Z"
+  },
+  {
+    "id": "b4d0ba90-4e8f-4ef8-a353-8cfb2664bf9a",
+    "firstName": "efgh",
+    "lastName": "buyer",
+    "email": "efgh@gmail.com",
+    "passwordHash": "$2a$10$XqZjgc.Ri9wMW5kXKPEKQuawmVcbDTvLQtdZtcly.nBhDNB11Nawa",
+    "role": "user",
+    "createdAt": "2026-06-18T15:31:00.786Z"
+  },
+  {
+    "id": "41a2e0cc-537d-4b1f-a66a-e18c38fecfd4",
+    "firstName": "ijkl",
+    "lastName": "buyer",
+    "email": "ijkl@gmail.com",
+    "passwordHash": "$2a$10$lDNF4KyN/5AhZ5.KHjdf4.bXrGoT7avdICuTyyhBGwJ9dsU9XyBCi",
+    "role": "user",
+    "createdAt": "2026-06-18T15:31:50.302Z"
+  },
+  {
+    "id": "047887e1-d8cc-4793-8383-31dcbb8a8214",
+    "firstName": "mnop",
+    "lastName": "buyer",
+    "email": "mnop@gmail.com",
+    "passwordHash": "$2a$10$Cm0nClruOJPXlrNFXBUMSejwfeurqB6UjZEW3vSnmHDM.LX.RYYh2",
+    "role": "user",
+    "createdAt": "2026-06-18T15:32:19.500Z"
+  },
+  {
+    "id": "14e009bf-e619-4ff7-99a6-7419621acef0",
+    "firstName": "qrst",
+    "lastName": "buyer",
+    "email": "qrst@gmail.com",
+    "passwordHash": "$2a$10$gMA/DaY2ziFd0dLWX1muCOpqv9lnJlTQ8xaQRyoDnDNC9jsoBYen6",
+    "role": "user",
+    "createdAt": "2026-06-18T15:33:01.334Z"
+  },
+  {
+    "id": "aa5a183c-637d-4458-8cbc-a9d070ceb22a",
+    "firstName": "uvwx",
+    "lastName": "buyer",
+    "email": "uvwx@gmail.com",
+    "passwordHash": "$2a$10$KM80g8YTrteyUD4yLOiPEOwXjAZJvAgZy0E1svnivfPAgnCGxGEoG",
+    "role": "user",
+    "createdAt": "2026-06-18T15:33:35.398Z"
+  },
+  {
+    "id": "98e1b6c8-7778-4224-b7a3-0d2d152fa251",
+    "firstName": "Hema",
+    "lastName": "Priya",
+    "email": "hemapriya@gmail.com",
+    "passwordHash": "$2a$10$K7X8JRjKM4J/qOQvS3cnW.vSLnZyB7gQcrmwrGPdXzCjxK0D/GfaS",
+    "role": "user",
+    "createdAt": "2026-06-18T15:35:06.170Z"
+  },
+  {
+    "id": "560a2656-be79-474f-9d16-958f25e8be93",
+    "firstName": "abcd",
+    "lastName": "Seller",
+    "email": "abcdseller@gmail.com",
+    "passwordHash": "$2a$10$p41y3szTPWXVNq/ZvuWB/O9YQh/IEhMWK45Kx7cCDyBr/LScKHclq",
+    "role": "user",
+    "createdAt": "2026-06-18T16:10:33.388Z"
+  },
+  {
+    "id": "2f907e53-1823-48da-bdc3-afe9f4f36638",
+    "firstName": "efgh",
+    "lastName": "seller",
+    "email": "efghseller@gmail.com",
+    "passwordHash": "$2a$10$x8zw/FTpkXYvb/jFeEGLpe.98oQZbqTE/U54mFHmGxLY.jZb0V6MG",
+    "role": "user",
+    "createdAt": "2026-06-18T16:11:16.864Z"
+  },
+  {
+    "id": "b7bf1c04-3548-452e-81ac-2c41338a4041",
+    "firstName": "ijkl",
+    "lastName": "seller",
+    "email": "ijklseller@gmail.com",
+    "passwordHash": "$2a$10$yxBRqS3DkSXVg7IXVLgocepprZB/ZMQzrh98bAW85BbgNQT.zRLpa",
+    "role": "user",
+    "createdAt": "2026-06-18T16:11:54.481Z"
+  },
+  {
+    "id": "453c63c3-bc00-44b3-82aa-7ddee226278a",
+    "firstName": "mnop",
+    "lastName": "seller",
+    "email": "mnopseller@gmail.com",
+    "passwordHash": "$2a$10$d8cXIAowLnF50pxSEl9V4.oc59/wD5YZC1/0J03I/yttGiUdmPybm",
+    "role": "user",
+    "createdAt": "2026-06-18T16:12:21.166Z"
+  },
+  {
+    "id": "36d7f1fe-2642-41d3-a252-20d4290e3516",
+    "firstName": "qrst",
+    "lastName": "seller",
+    "email": "qrstseller@gmail.com",
+    "passwordHash": "$2a$10$CeC0osnTtEbzi..tuPQeMuzQzfJwIACVsyn73WJ/UqqV6FXRpRw2a",
+    "role": "user",
+    "createdAt": "2026-06-18T16:13:27.333Z"
+  },
+  {
+    "id": "b196cece-2aa9-401b-b251-08de55b57127",
+    "firstName": "uvwx",
+    "lastName": "seller",
+    "email": "uvwxseller@gmail.com",
+    "passwordHash": "$2a$10$MkEMJMBolBjeD6.4.4izb.Mp0eqPmvFBoq89eswBXagAO2bEWB0Fy",
+    "role": "user",
+    "createdAt": "2026-06-18T16:14:01.581Z"
+  },
+  {
+    "id": "8e880ef3-cd30-470c-9f2c-3aa3b35bc38d",
+    "firstName": "hema",
+    "lastName": "priya seller",
+    "email": "hemapriyaseller@gmail.com",
+    "passwordHash": "$2a$10$cMwqat5bilVlg7ugQO39ROn6Ep9JhBuZ3ixqdvTXJlzRzZtSUpuKO",
+    "role": "user",
+    "createdAt": "2026-06-18T16:18:55.973Z"
+  }
+]

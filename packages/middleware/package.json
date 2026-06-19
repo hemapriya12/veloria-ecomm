@@ -1,0 +1,19 @@
+{
+  "name": "@repo/middleware",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^9.0.0"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.2",
+    "@types/node": "^24.3.1",
+    "express": "^5.1.0"
+  }
+}
