@@ -5,9 +5,11 @@ import productRouter from "./routes/product.route";
 import categoryRouter from "./routes/category.route";
 import { consumer, producer } from "./utils/kafka.js";
 const app = express();
-const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS ?? "http://localhost:3002,http://localhost:3003")
-  .split(",")
-  .map((o) => o.trim());
+const ALLOWED_ORIGINS = [
+  "http://localhost:3002",
+  "http://localhost:3003",
+  ...(process.env.ALLOWED_ORIGINS ?? "").split(",").map((o) => o.trim()).filter(Boolean),
+];
 
 app.use(
   cors({
