@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { ArrowLeft, Plus, X, Upload, Tag, Layers, DollarSign, Package } from "lucide-react";
 import { uploadToCloudinary } from "@/lib/cloudinary";
+import Spinner from "@/components/Spinner";
 
 const fetchCategories = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/categories`);
@@ -50,7 +51,7 @@ export default function NewProductPage() {
 
   const { control, handleSubmit, reset, watch, getValues, setValue, formState: { errors } } =
     useForm<z.infer<typeof ProductFormSchema>>({
-      resolver: zodResolver(ProductFormSchema),
+      resolver: zodResolver(ProductFormSchema) as any,
       defaultValues: {
         name: "", shortDescription: "", description: "",
         price: 0, salePrice: undefined, sku: "", brand: "",
@@ -362,7 +363,7 @@ export default function NewProductPage() {
                     <Controller name="images" control={control} render={({ field }) => (
                       field.value?.["default"]
                         ? <span className="text-xs text-emerald-600 font-semibold bg-emerald-100 px-2 py-0.5 rounded-full">✓ Uploaded</span>
-                        : null
+                        : <></>
                     )} />
                   </label>
                 ) : (

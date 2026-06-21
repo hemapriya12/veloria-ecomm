@@ -9,6 +9,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import { uploadToCloudinary } from "@/lib/cloudinary";
+import Spinner from "@/components/Spinner";
 
 type Props = { open: boolean; onClose: () => void };
 
@@ -36,7 +37,7 @@ export default function AddProduct({ open, onClose }: Props) {
     setValue,
     formState: { errors },
   } = useForm<z.infer<typeof ProductFormSchema>>({
-    resolver: zodResolver(ProductFormSchema),
+    resolver: zodResolver(ProductFormSchema) as any,
     defaultValues: {
       name: "",
       shortDescription: "",

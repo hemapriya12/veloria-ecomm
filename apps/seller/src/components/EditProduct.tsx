@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import SlidePanel from "./SlidePanel";
 import { DollarSign, Tag, Package, Percent } from "lucide-react";
+import Spinner from "@/components/Spinner";
 
 type Props = { productId: number | null; onClose: () => void };
 

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Mail, Lock, ArrowRight, Store, TrendingUp, Package, Users } from "lucide-react";
+import Spinner from "@/components/Spinner";
 
 const stats = [
   { icon: TrendingUp, label: "Avg. monthly revenue", value: "$12,400" },

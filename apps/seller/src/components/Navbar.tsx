@@ -5,6 +5,7 @@ import { useSession, signOut } from "next-auth/react";
 import { UserCircle, Settings, LogOut, ChevronDown, Search, Package, ShoppingCart, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Spinner from "@/components/Spinner";
 
 function getGreeting() {
   const hour = new Date().getHours();
