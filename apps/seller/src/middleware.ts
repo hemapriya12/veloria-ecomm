@@ -1,7 +1,7 @@
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 
-const publicRoutes = ["/sign-in", "/unauthorized", "/api/auth"];
+const publicRoutes = ["/sign-in", "/sign-up", "/unauthorized", "/api/auth"];
 
 function middleware(req: Request) {
   const url = new URL(req.url);

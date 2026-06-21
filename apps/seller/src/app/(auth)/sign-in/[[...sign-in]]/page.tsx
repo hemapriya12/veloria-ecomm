@@ -170,7 +170,7 @@ export default function Page() {
           <div className="mt-6 p-4 rounded-xl bg-gray-50 border border-gray-100">
             <p className="text-xs text-gray-500 text-center">
               Not a seller yet?{" "}
-              <a href="http://localhost:3002/sign-up" className="text-emerald-600 font-medium hover:underline">
+              <a href="/sign-up" className="text-emerald-600 font-medium hover:underline">
                 Create a seller account
               </a>
             </p>

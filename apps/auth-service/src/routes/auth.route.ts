@@ -91,4 +91,19 @@ router.post("/login", async (req, res) => {
   });
 });
 
+router.post("/signup-seller", async (req, res) => {
+  const { firstName, lastName, email, password } = req.body;
+
+  if (!firstName || !lastName || !email || !password) {
+    return res.status(400).json({ message: "All fields are required." });
+  }
+
+  try {
+    const user = await createUser({ firstName, lastName, email, password, role: "seller" });
+    return res.status(201).json(sanitizeUser(user));
+  } catch (error: any) {
+    return res.status(400).json({ message: error.message || "Unable to create seller account." });
+  }
+});
+
 export default router;
