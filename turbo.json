@@ -3,7 +3,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*", "src/**"],
+      "cache": false,
       "outputs": [".next/**", "!.next/cache/**"],
       "env": [
         "DATABASE_URL",
