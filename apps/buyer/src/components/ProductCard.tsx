@@ -68,7 +68,7 @@ const ProductCard = ({ product }: { product: ProductType }) => {
             )}
             {product.colors.length > 0 && (
               <div className="flex items-center gap-1.5">
-                {product.colors.map((color) => (
+                {product.colors.map((color: string) => (
                   <button
                     key={color}
                     onClick={() => setSelectedColor(color)}

@@ -44,7 +44,7 @@ const ProductInteraction = ({
         <div>
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Size</p>
           <div className="flex flex-wrap gap-2">
-            {product.sizes.map((size) => (
+            {product.sizes.map((size: string) => (
               <button key={size}
                 onClick={() => handleTypeChange("size", size)}
                 className={`w-10 h-10 rounded-xl text-xs font-semibold border-2 transition-all ${
@@ -66,7 +66,7 @@ const ProductInteraction = ({
             Color — <span className="capitalize font-normal text-gray-700">{selectedColor}</span>
           </p>
           <div className="flex gap-2">
-            {product.colors.map((color) => (
+            {product.colors.map((color: string) => (
               <button key={color}
                 onClick={() => handleTypeChange("color", color)}
                 className={`w-8 h-8 rounded-full border-2 transition-all ${selectedColor === color ? "border-violet-500 scale-110" : "border-transparent hover:scale-105"}`}
