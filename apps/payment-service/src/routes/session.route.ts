@@ -4,7 +4,7 @@ import { shouldBeUser } from "../middleware/authMiddleware";
 import { CartItemsType } from "@repo/types";
 const sessionRoute = Router();
 
-sessionRoute.post("/create-checkout-session", shouldBeUser, async (req: Request, res: Response) => {
+sessionRoute.post("/create-checkout-session", shouldBeUser as any, async (req: Request, res: Response) => {
   const { cart }: { cart: CartItemsType } = req.body;
   const userId = (req as any).userId;
 
