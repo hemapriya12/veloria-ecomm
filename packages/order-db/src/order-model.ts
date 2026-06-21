@@ -7,9 +7,10 @@ export const ReturnStatus = ["none", "requested", "approved", "rejected"] as con
 
 const OrderSchema = new Schema(
   {
-    userId: { type: String, required: true },
-    email: { type: String, required: true },
-    amount: { type: Number, required: true },
+    userId:      { type: String, required: true },
+    email:       { type: String, required: true },
+    sellerEmail: { type: String, default: null },
+    amount:      { type: Number, required: true },
     status: { type: String, required: true, enum: OrderStatus },
     fulfillmentStatus: {
       type: String,
