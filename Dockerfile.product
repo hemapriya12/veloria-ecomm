@@ -1,5 +1,5 @@
 FROM node:20-alpine
-RUN npm install -g pnpm@9 tsx --no-cache
+RUN npm install -g pnpm@9 tsx prisma@6
 
 WORKDIR /app
 
@@ -8,7 +8,7 @@ COPY packages/ packages/
 COPY apps/product-service/ apps/product-service/
 
 RUN pnpm install --frozen-lockfile
-RUN ./node_modules/.bin/prisma generate --schema ./packages/product-db/prisma/schema.prisma
+RUN prisma generate --schema ./packages/product-db/prisma/schema.prisma
 
 WORKDIR /app/apps/product-service
 
