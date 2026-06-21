@@ -7,7 +7,11 @@ import { OrderChartType } from "@repo/types";
 const orderRoute: Router = Router();
 
 orderRoute.get("/user-orders", shouldBeUser, async (req: Request, res: Response) => {
-  const orders = await Order.find({ userId: req.userId });
+  const { status, fulfillmentStatus } = req.query as { status?: string; fulfillmentStatus?: string };
+  const filter: Record<string, any> = { userId: req.userId };
+  if (status)            filter.status            = status;
+  if (fulfillmentStatus) filter.fulfillmentStatus = fulfillmentStatus;
+  const orders = await Order.find(filter).sort({ createdAt: -1 });
   return res.json(orders);
 });
 
