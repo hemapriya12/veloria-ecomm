@@ -1,8 +1,6 @@
-import { promises as fs } from "fs";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
 import { randomUUID } from "crypto";
 import bcrypt from "bcryptjs";
+import { prisma } from "@repo/product-db";
 
 export type StoredUser = {
   id: string;
@@ -12,38 +10,33 @@ export type StoredUser = {
   passwordHash: string;
   role: "seller" | "user";
   createdAt: string;
-  avatar?: string;
-  storeName?: string;
-  bio?: string;
-  phone?: string;
-  website?: string;
+  avatar?: string | null;
+  storeName?: string | null;
+  bio?: string | null;
+  phone?: string | null;
+  website?: string | null;
 };
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const storagePath = join(__dirname, "..", "..", "users.json");
+const toStoredUser = (user: any): StoredUser => ({
+  ...user,
+  createdAt: user.createdAt.toISOString(),
+});
 
-async function readFile() {
-  try {
-    const raw = await fs.readFile(storagePath, "utf-8");
-    return JSON.parse(raw) as StoredUser[];
-  } catch (error) {
-    return [];
-  }
-}
-
-async function writeFile(users: StoredUser[]) {
-  await fs.writeFile(storagePath, JSON.stringify(users, null, 2), "utf-8");
-}
-
-export const getUsers = async () => readFile();
-export const getUserById = async (id: string) => {
-  const users = await readFile();
-  return users.find((user) => user.id === id);
+export const getUsers = async (): Promise<StoredUser[]> => {
+  const users = await prisma.user.findMany();
+  return users.map(toStoredUser);
 };
 
-export const getUserByEmail = async (email: string) => {
-  const users = await readFile();
-  return users.find((user) => user.email.toLowerCase() === email.toLowerCase());
+export const getUserById = async (id: string): Promise<StoredUser | null> => {
+  const user = await prisma.user.findUnique({ where: { id } });
+  return user ? toStoredUser(user) : null;
+};
+
+export const getUserByEmail = async (email: string): Promise<StoredUser | null> => {
+  const user = await prisma.user.findUnique({
+    where: { email: email.toLowerCase() },
+  });
+  return user ? toStoredUser(user) : null;
 };
 
 export const createUser = async ({
@@ -58,70 +51,62 @@ export const createUser = async ({
   email: string;
   password: string;
   role?: "seller" | "user";
-}) => {
-  const users = await readFile();
-  const existing = users.find(
-    (user) => user.email.toLowerCase() === email.toLowerCase(),
-  );
-  if (existing) {
-    throw new Error("User already exists");
-  }
+}): Promise<StoredUser> => {
+  const existing = await getUserByEmail(email);
+  if (existing) throw new Error("User already exists");
 
-  const user = {
-    id: randomUUID(),
-    firstName,
-    lastName,
-    email,
-    passwordHash: await bcrypt.hash(password, 10),
-    role,
-    createdAt: new Date().toISOString(),
-  };
-
-  users.push(user);
-  await writeFile(users);
-  return user;
+  const user = await prisma.user.create({
+    data: {
+      id: randomUUID(),
+      firstName,
+      lastName,
+      email: email.toLowerCase(),
+      passwordHash: await bcrypt.hash(password, 10),
+      role,
+    },
+  });
+  return toStoredUser(user);
 };
 
 export const updateUser = async (
   id: string,
   updates: Partial<Pick<StoredUser, "firstName" | "lastName" | "avatar" | "storeName" | "bio" | "phone" | "website">>
-) => {
-  const users = await readFile();
-  const idx = users.findIndex((u) => u.id === id);
-  if (idx === -1) throw new Error("User not found");
-  users[idx] = { ...users[idx]!, ...updates };
-  await writeFile(users);
-  return users[idx]!;
+): Promise<StoredUser> => {
+  const user = await prisma.user.update({ where: { id }, data: updates });
+  return toStoredUser(user);
 };
 
-export const changePassword = async (id: string, currentPassword: string, newPassword: string) => {
-  const users = await readFile();
-  const user = users.find((u) => u.id === id);
+export const changePassword = async (
+  id: string,
+  currentPassword: string,
+  newPassword: string
+): Promise<void> => {
+  const user = await prisma.user.findUnique({ where: { id } });
   if (!user) throw new Error("User not found");
   const valid = await bcrypt.compare(currentPassword, user.passwordHash);
   if (!valid) throw new Error("Current password is incorrect");
-  user.passwordHash = await bcrypt.hash(newPassword, 10);
-  await writeFile(users);
+  await prisma.user.update({
+    where: { id },
+    data: { passwordHash: await bcrypt.hash(newPassword, 10) },
+  });
 };
 
-export const deleteUser = async (id: string) => {
-  const users = await readFile();
-  const filtered = users.filter((user) => user.id !== id);
-  await writeFile(filtered);
-  return filtered.length !== users.length;
+export const deleteUser = async (id: string): Promise<boolean> => {
+  try {
+    await prisma.user.delete({ where: { id } });
+    return true;
+  } catch {
+    return false;
+  }
 };
 
-export const ensureAdminUser = async () => {
+export const ensureAdminUser = async (): Promise<void> => {
   const adminEmail = process.env.ADMIN_EMAIL;
   const adminPassword = process.env.ADMIN_PASSWORD;
-  if (!adminEmail || !adminPassword) {
-    return;
-  }
+  if (!adminEmail || !adminPassword) return;
 
   const existing = await getUserByEmail(adminEmail);
-  if (existing) {
-    return;
-  }
+  if (existing) return;
 
   await createUser({
     firstName: process.env.ADMIN_FIRST_NAME ?? "Admin",
@@ -130,4 +115,5 @@ export const ensureAdminUser = async () => {
     password: adminPassword,
     role: "seller",
   });
+  console.log("Admin user created");
 };

@@ -26,6 +26,9 @@ importers:
       '@repo/middleware':
         specifier: workspace:*
         version: link:../../packages/middleware
+      '@repo/product-db':
+        specifier: workspace:*
+        version: link:../../packages/product-db
       bcryptjs:
         specifier: ^2.4.3
         version: 2.4.3

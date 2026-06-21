@@ -17,7 +17,8 @@
     "express": "^5.0.3",
     "jsonwebtoken": "^9.0.0",
     "@repo/kafka": "workspace:*",
-    "@repo/middleware": "workspace:*"
+    "@repo/middleware": "workspace:*",
+    "@repo/product-db": "workspace:*"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
