@@ -8,6 +8,7 @@ COPY packages/ packages/
 COPY apps/product-service/ apps/product-service/
 
 RUN pnpm install --frozen-lockfile
+RUN pnpm exec prisma generate --schema ./packages/product-db/prisma/schema.prisma
 
 WORKDIR /app/apps/product-service
 
