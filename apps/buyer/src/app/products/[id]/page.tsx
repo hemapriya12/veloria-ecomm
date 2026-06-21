@@ -93,7 +93,7 @@ const ProductPage = async ({
           {/* Color thumbnails */}
           {product.colors.length > 1 && (
             <div className="flex gap-2 mt-3">
-              {product.colors.map((c) => (
+              {product.colors.map((c: string) => (
                 <Link key={c} href={`?color=${c}${selectedSize ? `&size=${selectedSize}` : ""}`}
                   className={`relative w-16 h-16 rounded-xl overflow-hidden border-2 transition-all ${selectedColor === c ? "border-violet-500" : "border-gray-200"}`}>
                   <Image src={getProductImage(product.images, c)} alt={c} fill className="object-cover" />
