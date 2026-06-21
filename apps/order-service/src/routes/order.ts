@@ -65,10 +65,17 @@ orderRoute.get("/orders/summary", shouldBeAdmin, async (req: Request, res: Respo
 });
 
 orderRoute.get("/orders", shouldBeAdmin, async (req: Request, res: Response) => {
-  const { limit, sellerEmail, page } = req.query as { limit?: string; sellerEmail?: string; page?: string };
-  const filter = sellerEmail ? { sellerEmail } : {};
-  const take   = Math.min(parseInt(limit ?? "100"), 500);
-  const skip   = (parseInt(page ?? "1") - 1) * take;
+  const { limit, sellerEmail, page, status, fulfillmentStatus } = req.query as {
+    limit?: string; sellerEmail?: string; page?: string;
+    status?: string; fulfillmentStatus?: string;
+  };
+  const filter: Record<string, string> = {};
+  if (sellerEmail)       filter.sellerEmail       = sellerEmail;
+  if (status)            filter.status            = status;
+  if (fulfillmentStatus) filter.fulfillmentStatus = fulfillmentStatus;
+
+  const take = Math.min(parseInt(limit ?? "20"), 100);
+  const skip = (parseInt(page ?? "1") - 1) * take;
   const [orders, total] = await Promise.all([
     Order.find(filter).sort({ createdAt: -1 }).skip(skip).limit(take),
     Order.countDocuments(filter),

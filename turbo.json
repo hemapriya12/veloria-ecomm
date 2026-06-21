@@ -18,7 +18,8 @@
         "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY",
         "NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME",
         "NEXT_PUBLIC_SELLER_URL",
-        "ADMIN_EMAIL"
+        "ADMIN_EMAIL",
+        "NEXT_PUBLIC_ADMIN_EMAIL"
       ]
     },
     "lint": {

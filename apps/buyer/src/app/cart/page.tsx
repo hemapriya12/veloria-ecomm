@@ -110,7 +110,7 @@ const CartPage = () => {
                         {/* Quantity controls */}
                         <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden">
                           <button
-                            onClick={() => updateQuantity(item, item.quantity - 1)}
+                            onClick={() => item.quantity <= 1 ? removeFromCart(item) : updateQuantity(item, item.quantity - 1)}
                             className="px-2.5 py-1.5 hover:bg-gray-50 text-gray-500 transition-colors"
                           >
                             <Minus size={12} />

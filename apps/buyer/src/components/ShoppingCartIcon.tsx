@@ -12,9 +12,9 @@ const ShoppingCartIcon = () => {
     <Link href="/cart" className="relative p-1.5">
       <ShoppingCart size={18} className="text-gray-600" />
       {hasHydrated && count > 0 && (
-        <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full text-white text-[10px] font-bold flex items-center justify-center"
+        <span className="absolute -top-1 -right-1 min-w-4 h-4 px-1 rounded-full text-white text-[10px] font-bold flex items-center justify-center"
           style={{ background: "linear-gradient(135deg, #7c3aed, #a855f7)" }}>
-          {count > 9 ? "9+" : count}
+          {count > 99 ? "99+" : count}
         </span>
       )}
     </Link>
