@@ -63,7 +63,7 @@ const ProductCard = ({ product }: { product: ProductType }) => {
                 onChange={(e) => setSelectedSize(e.target.value)}
                 className="text-xs border border-gray-200 rounded-lg px-2 py-1 outline-none focus:border-violet-400 bg-gray-50"
               >
-                {product.sizes.map((s) => <option key={s} value={s}>{s.toUpperCase()}</option>)}
+                {product.sizes.map((s: string) => <option key={s} value={s}>{s.toUpperCase()}</option>)}
               </select>
             )}
             {product.colors.length > 0 && (
