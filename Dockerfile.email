@@ -11,4 +11,5 @@ RUN pnpm install --frozen-lockfile
 
 WORKDIR /app/apps/email-service
 
+EXPOSE 8004
 CMD ["tsx", "src/index.ts"]
