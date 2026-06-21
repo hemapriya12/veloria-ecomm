@@ -25,6 +25,27 @@ const STATUS_OPTIONS = [
   { value: "failed",  label: "Failed"       },
 ];
 
+// Generate month options from Jan 2026 to current month
+function generateMonthOptions() {
+  const options = [{ value: "", label: "All Time" }];
+  const start = new Date("2026-01-01");
+  const now   = new Date();
+  const end   = new Date(now.getFullYear(), now.getMonth(), 1);
+  const d     = new Date(start);
+  while (d <= end) {
+    const year  = d.getFullYear();
+    const month = d.getMonth();
+    const label = d.toLocaleString("en-US", { month: "short", year: "numeric" });
+    const startDate = new Date(year, month, 1).toISOString();
+    const endDate   = new Date(year, month + 1, 0, 23, 59, 59).toISOString();
+    options.unshift({ value: `${startDate}|${endDate}`, label });
+    d.setMonth(d.getMonth() + 1);
+  }
+  return options;
+}
+
+const MONTH_OPTIONS = generateMonthOptions();
+
 export default function OrdersPage() {
   const { data: session } = useSession();
   const email   = session?.user?.email ?? "";
@@ -37,6 +58,7 @@ export default function OrdersPage() {
   const [search,      setSearch]      = useState("");
   const [statusFilter,      setStatusFilter]      = useState("");
   const [fulfillmentFilter, setFulfillmentFilter] = useState("");
+  const [monthFilter,       setMonthFilter]       = useState("");
 
   const totalPages = Math.ceil(total / LIMIT);
 
@@ -48,6 +70,11 @@ export default function OrdersPage() {
       if (!isAdmin) params.set("sellerEmail", email);
       if (statusFilter)      params.set("status",            statusFilter);
       if (fulfillmentFilter) params.set("fulfillmentStatus", fulfillmentFilter);
+      if (monthFilter) {
+        const [startDate, endDate] = monthFilter.split("|");
+        params.set("startDate", startDate!);
+        params.set("endDate",   endDate!);
+      }
 
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/orders?${params}`,
@@ -63,14 +90,14 @@ export default function OrdersPage() {
     } finally {
       setLoading(false);
     }
-  }, [session?.user?.token, email, isAdmin, page, statusFilter, fulfillmentFilter]);
+  }, [session?.user?.token, email, isAdmin, page, statusFilter, fulfillmentFilter, monthFilter]);
 
   useEffect(() => {
     fetchOrders();
   }, [fetchOrders]);
 
   // reset to page 1 when filters change
-  useEffect(() => { setPage(1); }, [statusFilter, fulfillmentFilter]);
+  useEffect(() => { setPage(1); }, [statusFilter, fulfillmentFilter, monthFilter]);
 
   const filtered = search
     ? orders.filter(o =>
@@ -120,8 +147,14 @@ export default function OrdersPage() {
           {FULFILLMENT_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
 
-        {(statusFilter || fulfillmentFilter || search) && (
-          <button onClick={() => { setStatusFilter(""); setFulfillmentFilter(""); setSearch(""); }}
+        {/* Month filter */}
+        <select value={monthFilter} onChange={e => setMonthFilter(e.target.value)}
+          className="text-sm border border-gray-200 rounded-xl px-3 py-2 outline-none focus:border-emerald-400 bg-gray-50 text-gray-700">
+          {MONTH_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+        </select>
+
+        {(statusFilter || fulfillmentFilter || monthFilter || search) && (
+          <button onClick={() => { setStatusFilter(""); setFulfillmentFilter(""); setMonthFilter(""); setSearch(""); }}
             className="text-xs text-red-500 hover:text-red-700 font-medium px-2">
             Clear filters
           </button>

@@ -65,14 +65,20 @@ orderRoute.get("/orders/summary", shouldBeAdmin, async (req: Request, res: Respo
 });
 
 orderRoute.get("/orders", shouldBeAdmin, async (req: Request, res: Response) => {
-  const { limit, sellerEmail, page, status, fulfillmentStatus } = req.query as {
+  const { limit, sellerEmail, page, status, fulfillmentStatus, startDate, endDate } = req.query as {
     limit?: string; sellerEmail?: string; page?: string;
     status?: string; fulfillmentStatus?: string;
+    startDate?: string; endDate?: string;
   };
-  const filter: Record<string, string> = {};
+  const filter: Record<string, any> = {};
   if (sellerEmail)       filter.sellerEmail       = sellerEmail;
   if (status)            filter.status            = status;
   if (fulfillmentStatus) filter.fulfillmentStatus = fulfillmentStatus;
+  if (startDate || endDate) {
+    filter.createdAt = {};
+    if (startDate) filter.createdAt.$gte = new Date(startDate);
+    if (endDate)   filter.createdAt.$lte = new Date(endDate);
+  }
 
   const take = Math.min(parseInt(limit ?? "20"), 100);
   const skip = (parseInt(page ?? "1") - 1) * take;
