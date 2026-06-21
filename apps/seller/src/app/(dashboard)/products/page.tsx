@@ -6,10 +6,13 @@ import { ProductsType } from "@repo/types";
 import { DataTable } from "./data-table";
 
 const getData = async (sellerEmail: string): Promise<ProductsType> => {
+  if (!sellerEmail) return [];
   try {
     const url = `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/products?admin=true&sellerEmail=${encodeURIComponent(sellerEmail)}`;
     const res = await fetch(url, { cache: "no-store" });
-    return res.ok ? res.json() : [];
+    if (!res.ok) return [];
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
   } catch {
     return [];
   }
@@ -27,7 +30,8 @@ export default async function ProductPage() {
         <p className="text-sm text-gray-500 mt-0.5">
           Manage your catalogue —{" "}
           <span className="font-medium text-gray-700">{data.length}</span>{" "}
-          product{data.length !== 1 ? "s" : ""} total.
+          product{data.length !== 1 ? "s" : ""} total
+          {sellerEmail ? ` for ${sellerEmail}` : " (no session)"}.
         </p>
       </div>
       <DataTable data={data} />
