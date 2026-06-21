@@ -17,21 +17,22 @@ const CardList = async ({ title }: { title: string }) => {
   const session = await getServerSession(authOptions);
   const token = session?.user?.token;
 
+  const email = session?.user?.email ?? "";
+
   if (title === "Popular Products") {
     products = await fetch(
-      `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/products?limit=5&popular=true`,
+      `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/products?limit=5&sellerEmail=${encodeURIComponent(email)}`,
     )
       .then((res) => (res.ok ? res.json() : []))
       .catch(() => []);
   } else {
-    orders = await fetch(
-      `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/orders?limit=5`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      },
+    const json = await fetch(
+      `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/orders?limit=5&sellerEmail=${encodeURIComponent(email)}`,
+      { headers: { Authorization: `Bearer ${token}` } },
     )
-      .then((res) => (res.ok ? res.json() : []))
-      .catch(() => []);
+      .then((res) => (res.ok ? res.json() : { orders: [] }))
+      .catch(() => ({ orders: [] }));
+    orders = json.orders ?? [];
   }
 
   return (
