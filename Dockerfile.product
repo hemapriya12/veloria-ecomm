@@ -1,5 +1,5 @@
 FROM node:20-alpine
-RUN npm install -g pnpm@9 tsx
+RUN npm install -g pnpm@9 tsx --no-cache
 
 WORKDIR /app
 
