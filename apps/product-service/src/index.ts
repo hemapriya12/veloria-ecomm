@@ -43,14 +43,15 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 });
 
 const start = async () => {
+  app.listen(8000, () => {
+    console.log("Product service is running on 8000");
+  });
+
   try {
-    Promise.all([await producer.connect(), await consumer.connect()]);
-    app.listen(8000, () => {
-      console.log("Product service is running on 8000");
-    });
+    await Promise.all([producer.connect(), consumer.connect()]);
+    console.log("Kafka connected");
   } catch (error) {
-    console.log(error);
-    process.exit(1);
+    console.warn("[Product service] Kafka unavailable — running without it:", (error as any)?.message);
   }
 };
 
