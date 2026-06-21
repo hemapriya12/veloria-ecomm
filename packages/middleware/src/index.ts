@@ -1,4 +1,4 @@
-import type { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction, RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 
 declare global {
@@ -19,7 +19,7 @@ const getToken = (req: Request): string | null => {
 const verifyToken = (token: string): Record<string, unknown> =>
   jwt.verify(token, process.env.NEXTAUTH_SECRET ?? "secret") as Record<string, unknown>;
 
-export const shouldBeUser = (req: Request, res: Response, next: NextFunction): void => {
+export const shouldBeUser = (req: any, res: any, next: any): void => {
   const token = getToken(req);
   if (!token) { res.status(401).json({ message: "You are not logged in!" }); return; }
   try {
@@ -32,7 +32,7 @@ export const shouldBeUser = (req: Request, res: Response, next: NextFunction): v
   }
 };
 
-export const shouldBeAdmin = (req: Request, res: Response, next: NextFunction): void => {
+export const shouldBeAdmin = (req: any, res: any, next: any): void => {
   const token = getToken(req);
   if (!token) { res.status(401).json({ message: "You are not logged in!" }); return; }
   try {

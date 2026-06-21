@@ -2,7 +2,7 @@ import { Router, Request, Response } from "express";
 import stripe from "../utils/stripe";
 import { shouldBeUser } from "../middleware/authMiddleware";
 import { CartItemsType } from "@repo/types";
-const sessionRoute = Router();
+const sessionRoute: Router = Router();
 
 sessionRoute.post("/create-checkout-session", shouldBeUser as any, async (req: Request, res: Response) => {
   const { cart }: { cart: CartItemsType } = req.body;

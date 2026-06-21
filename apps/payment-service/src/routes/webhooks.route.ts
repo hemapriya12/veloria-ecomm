@@ -4,7 +4,7 @@ import stripe from "../utils/stripe";
 import { producer } from "../utils/kafka";
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET as string;
-const webhookRoute = Router();
+const webhookRoute: Router = Router();
 
 webhookRoute.get("/", (req: Request, res: Response) => {
   res.json({
