@@ -4,7 +4,7 @@ import { Order, FulfillmentStatus, ReturnStatus, Review } from "@repo/order-db";
 import { startOfMonth, subMonths } from "date-fns";
 import { OrderChartType } from "@repo/types";
 
-const orderRoute = Router();
+const orderRoute: Router = Router();
 
 orderRoute.get("/user-orders", shouldBeUser, async (req: Request, res: Response) => {
   const orders = await Order.find({ userId: req.userId });
