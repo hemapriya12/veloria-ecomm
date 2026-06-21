@@ -6,10 +6,13 @@ import ShoppingCartIcon from "./ShoppingCartIcon";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { ShoppingBag, Package } from "lucide-react";
+import { useState, useEffect } from "react";
 
 const Navbar = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   return (
     <nav className="w-full flex items-center justify-between py-4 mb-2">
@@ -35,7 +38,7 @@ const Navbar = () => {
       <div className="flex items-center gap-3">
         <ShoppingCartIcon />
 
-        {status === "loading" ? (
+        {!mounted || status === "loading" ? (
           <div className="w-16 h-7 rounded-xl bg-gray-100 animate-pulse" />
         ) : status === "authenticated" ? (
           <>
