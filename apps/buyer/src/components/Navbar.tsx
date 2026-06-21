@@ -35,7 +35,9 @@ const Navbar = () => {
       <div className="flex items-center gap-3">
         <ShoppingCartIcon />
 
-        {status === "authenticated" ? (
+        {status === "loading" ? (
+          <div className="w-16 h-7 rounded-xl bg-gray-100 animate-pulse" />
+        ) : status === "authenticated" ? (
           <>
             <button
               onClick={() => router.push("/orders")}
@@ -46,9 +48,7 @@ const Navbar = () => {
             <button
               onClick={() => signOut({ callbackUrl: "/" })}
               className="rounded-xl px-3 py-1.5 text-xs font-semibold text-white transition-all"
-              style={{
-                background: "linear-gradient(135deg, #7c3aed, #a855f7)",
-              }}
+              style={{ background: "linear-gradient(135deg, #7c3aed, #a855f7)" }}
             >
               Sign out
             </button>
