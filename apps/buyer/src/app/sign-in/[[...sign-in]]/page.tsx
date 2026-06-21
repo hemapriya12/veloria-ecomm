@@ -4,10 +4,11 @@ import { useState } from "react";
 import { signIn, getSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Mail, Lock, ArrowRight, ShoppingBag, ShoppingCart, Store } from "lucide-react";
+import Spinner from "@/components/Spinner";
 
 type Role = "user" | "seller";
 
-const SELLER_URL = "http://localhost:3003";
+const SELLER_URL = process.env.NEXT_PUBLIC_SELLER_URL ?? "http://localhost:3003";
 
 export default function Page() {
   const router       = useRouter();
