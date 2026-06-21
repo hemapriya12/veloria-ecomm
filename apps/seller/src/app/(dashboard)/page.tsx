@@ -21,11 +21,11 @@ export default async function Homepage() {
 
   const email   = session?.user?.email ?? "";
   const isAdmin = email === (process.env.ADMIN_EMAIL ?? "admin@example.com");
-  const sellerParam = isAdmin ? "" : `&sellerEmail=${encodeURIComponent(email)}`;
+  const sq      = isAdmin ? "" : `sellerEmail=${encodeURIComponent(email)}`;
 
   const [summary, orderChartData, productCount] = await Promise.all([
-    fetch(`${base}/orders/summary?${sellerParam}`, { headers }).then((r) => (r.ok ? r.json() : null)).catch(() => null) as Promise<OrderSummaryType | null>,
-    fetch(`${base}/order-chart?${sellerParam}`, { headers }).then((r) => (r.ok ? r.json() : [])).catch(() => []),
+    fetch(`${base}/orders/summary${sq ? `?${sq}` : ""}`, { headers, cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).catch(() => null) as Promise<OrderSummaryType | null>,
+    fetch(`${base}/order-chart${sq ? `?${sq}` : ""}`, { headers, cache: "no-store" }).then((r) => (r.ok ? r.json() : [])).catch(() => []),
     fetch(`${productBase}/products?admin=true&sellerEmail=${encodeURIComponent(email)}`, { headers, cache: "no-store" }).then((r) => (r.ok ? r.json() : [])).then((p: unknown[]) => p.length).catch(() => 0),
   ]);
 
