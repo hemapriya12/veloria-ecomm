@@ -6,36 +6,31 @@ import { authOptions } from "@/lib/auth";
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "admin@example.com";
 
+export const dynamic = "force-dynamic";
+
 export default async function OrdersPage() {
   const session = await getServerSession(authOptions);
-  const token = session?.user?.token;
-  const email = session?.user?.email ?? "";
+  const token   = session?.user?.token;
+  const email   = session?.user?.email ?? "";
   const isAdmin = email === ADMIN_EMAIL;
 
   let data: OrderType[] = [];
+  let total = 0;
 
   try {
-    const allOrdersRes = await fetch(
-      `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/orders`,
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    const allOrders: OrderType[] = allOrdersRes.ok ? await allOrdersRes.json() : [];
+    const url = isAdmin
+      ? `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/orders?limit=100`
+      : `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/orders?sellerEmail=${encodeURIComponent(email)}&limit=100`;
 
-    if (isAdmin) {
-      data = allOrders;
-    } else {
-      // fetch this seller's products to get their IDs
-      const productsRes = await fetch(
-        `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/products?admin=true&sellerEmail=${encodeURIComponent(email)}`,
-        { cache: "no-store" }
-      );
-      const products: { id: number }[] = productsRes.ok ? await productsRes.json() : [];
-      const sellerProductIds = new Set(products.map((p) => p.id));
+    const res = await fetch(url, {
+      headers: { Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    });
 
-      // keep only orders that contain at least one product from this seller
-      data = allOrders.filter((order: any) =>
-        order.products?.some((p: any) => sellerProductIds.has(p.productId))
-      );
+    if (res.ok) {
+      const json = await res.json();
+      data  = json.orders  ?? [];
+      total = json.total   ?? data.length;
     }
   } catch {
     data = [];
@@ -47,7 +42,8 @@ export default async function OrdersPage() {
         <h1 className="text-2xl font-bold text-gray-900">Orders</h1>
         <p className="text-sm text-gray-500 mt-0.5">
           {isAdmin ? "All orders across all sellers — " : "Orders containing your products — "}
-          <span className="font-medium text-gray-700">{data.length}</span> order{data.length !== 1 ? "s" : ""} total.
+          <span className="font-medium text-gray-700">{total.toLocaleString()}</span> orders total
+          {total > 100 && <span className="text-gray-400"> (showing latest 100)</span>}.
         </p>
       </div>
       <DataTable columns={columns} data={data} />

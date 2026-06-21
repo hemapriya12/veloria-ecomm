@@ -45,12 +45,15 @@ orderRoute.post("/orders", shouldBeUser, async (req: Request, res: Response) => 
 });
 
 orderRoute.get("/orders/summary", shouldBeAdmin, async (req: Request, res: Response) => {
+  const { sellerEmail } = req.query as { sellerEmail?: string };
+  const filter = sellerEmail ? { sellerEmail } : {};
+
   const [totalOrders, revenueResult, pendingShipments, deliveredOrders] =
     await Promise.all([
-      Order.countDocuments(),
-      Order.aggregate([{ $group: { _id: null, total: { $sum: "$amount" } } }]),
-      Order.countDocuments({ fulfillmentStatus: "pending" }),
-      Order.countDocuments({ fulfillmentStatus: "delivered" }),
+      Order.countDocuments(filter),
+      Order.aggregate([{ $match: filter }, { $group: { _id: null, total: { $sum: "$amount" } } }]),
+      Order.countDocuments({ ...filter, fulfillmentStatus: "pending" }),
+      Order.countDocuments({ ...filter, fulfillmentStatus: "delivered" }),
     ]);
 
   return res.json({
@@ -62,9 +65,15 @@ orderRoute.get("/orders/summary", shouldBeAdmin, async (req: Request, res: Respo
 });
 
 orderRoute.get("/orders", shouldBeAdmin, async (req: Request, res: Response) => {
-  const { limit } = req.query as { limit: number };
-  const orders = await Order.find().limit(limit).sort({ createdAt: -1 });
-  return res.json(orders);
+  const { limit, sellerEmail, page } = req.query as { limit?: string; sellerEmail?: string; page?: string };
+  const filter = sellerEmail ? { sellerEmail } : {};
+  const take   = Math.min(parseInt(limit ?? "100"), 500);
+  const skip   = (parseInt(page ?? "1") - 1) * take;
+  const [orders, total] = await Promise.all([
+    Order.find(filter).sort({ createdAt: -1 }).skip(skip).limit(take),
+    Order.countDocuments(filter),
+  ]);
+  return res.json({ orders, total });
 });
 
 orderRoute.put("/orders/:id/status", shouldBeAdmin, async (req: Request, res: Response) => {
@@ -89,11 +98,14 @@ orderRoute.put("/orders/:id/status", shouldBeAdmin, async (req: Request, res: Re
 });
 
 orderRoute.get("/order-chart", shouldBeAdmin, async (req: Request, res: Response) => {
+  const { sellerEmail } = req.query as { sellerEmail?: string };
   const now = new Date();
   const sixMonthsAgo = startOfMonth(subMonths(now, 5));
+  const dateFilter = { createdAt: { $gte: sixMonthsAgo, $lte: now } };
+  const matchFilter = sellerEmail ? { ...dateFilter, sellerEmail } : dateFilter;
 
   const raw = await Order.aggregate([
-    { $match: { createdAt: { $gte: sixMonthsAgo, $lte: now } } },
+    { $match: matchFilter },
     {
       $group: {
         _id: { year: { $year: "$createdAt" }, month: { $month: "$createdAt" } },
