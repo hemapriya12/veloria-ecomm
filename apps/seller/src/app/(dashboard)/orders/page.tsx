@@ -97,11 +97,6 @@ export default function OrdersPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* DEBUG — remove after confirming */}
-      <div className="bg-yellow-50 border border-yellow-200 rounded-xl px-4 py-2 text-xs text-yellow-800 font-mono">
-        v2 | session: {session ? "✅" : "⏳"} | email: {email || "none"} | loading: {String(loading)} | total: {total}
-      </div>
-
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
