@@ -25,26 +25,15 @@ const STATUS_OPTIONS = [
   { value: "failed",  label: "Failed"       },
 ];
 
-// Generate month options from Jan 2026 to current month
-function generateMonthOptions() {
-  const options = [{ value: "", label: "All Time" }];
-  const start = new Date("2026-01-01");
-  const now   = new Date();
-  const end   = new Date(now.getFullYear(), now.getMonth(), 1);
-  const d     = new Date(start);
-  while (d <= end) {
-    const year  = d.getFullYear();
-    const month = d.getMonth();
-    const label = d.toLocaleString("en-US", { month: "short", year: "numeric" });
-    const startDate = new Date(year, month, 1).toISOString();
-    const endDate   = new Date(year, month + 1, 0, 23, 59, 59).toISOString();
-    options.unshift({ value: `${startDate}|${endDate}`, label });
-    d.setMonth(d.getMonth() + 1);
-  }
-  return options;
-}
-
-const MONTH_OPTIONS = generateMonthOptions();
+const MONTH_OPTIONS = [
+  { value: "", label: "All Time" },
+  { value: "2026-06-01T00:00:00.000Z|2026-06-30T23:59:59.000Z", label: "Jun 2026" },
+  { value: "2026-05-01T00:00:00.000Z|2026-05-31T23:59:59.000Z", label: "May 2026" },
+  { value: "2026-04-01T00:00:00.000Z|2026-04-30T23:59:59.000Z", label: "Apr 2026" },
+  { value: "2026-03-01T00:00:00.000Z|2026-03-31T23:59:59.000Z", label: "Mar 2026" },
+  { value: "2026-02-01T00:00:00.000Z|2026-02-28T23:59:59.000Z", label: "Feb 2026" },
+  { value: "2026-01-01T00:00:00.000Z|2026-01-31T23:59:59.000Z", label: "Jan 2026" },
+];
 
 export default function OrdersPage() {
   const { data: session } = useSession();
