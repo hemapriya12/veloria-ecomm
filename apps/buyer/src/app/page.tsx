@@ -1,8 +1,9 @@
 import ProductList from "@/components/ProductList";
 import HeroCarousel from "@/components/HeroCarousel";
+import PersonalizedCategories from "@/components/PersonalizedCategories";
 import Link from "next/link";
 import { ArrowRight, ShieldCheck, Truck, RefreshCw } from "lucide-react";
-// ArrowRight used in "View all" link below
+import { Suspense } from "react";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 
@@ -77,8 +78,8 @@ const Homepage = async ({ searchParams }: { searchParams: Promise<{ category: st
   const session  = await getServerSession(authOptions);
   const token    = session?.user?.token;
 
-  // Only compute personalised slugs for logged-in users
-  const topSlugs = token ? await getTopCategorySlugs(token) : null;
+  // Start the slug fetch without awaiting — it runs concurrently with ProductList.fetchData
+  const topSlugsPromise = token ? getTopCategorySlugs(token) : null;
 
   return (
     <div className="flex flex-col gap-16">
@@ -112,7 +113,31 @@ const Homepage = async ({ searchParams }: { searchParams: Promise<{ category: st
             View all <ArrowRight size={13} />
           </Link>
         </div>
-        <ProductList category={category} params="homepage" personalizedSlugs={topSlugs ?? undefined} />
+        {/* Categories stream independently of the product grid */}
+        <Suspense fallback={
+          <div className="flex flex-wrap gap-2 mb-6">
+            {[0, 1, 2, 3, 4].map((i) => (
+              <div key={i} className="h-8 w-20 bg-gray-100 animate-pulse rounded-full" />
+            ))}
+          </div>
+        }>
+          <PersonalizedCategories slugsPromise={topSlugsPromise} limit={5} />
+        </Suspense>
+        {/* ProductList streams independently so products appear as soon as they load */}
+        <Suspense fallback={
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-12">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="flex flex-col gap-3">
+                <div className="w-full aspect-square bg-gray-100 animate-pulse rounded-2xl" />
+                <div className="h-4 w-3/4 bg-gray-100 animate-pulse rounded" />
+                <div className="h-3 w-1/2 bg-gray-100 animate-pulse rounded" />
+                <div className="h-5 w-1/4 bg-gray-100 animate-pulse rounded" />
+              </div>
+            ))}
+          </div>
+        }>
+          <ProductList category={category} params="homepage" />
+        </Suspense>
       </div>
 
     </div>

@@ -1,4 +1,3 @@
-import Categories from "./Categories";
 import ProductCard from "./ProductCard";
 import Filter from "./Filter";
 import Pagination from "./Pagination";
@@ -43,14 +42,12 @@ const ProductList = async ({
   search,
   params,
   page,
-  personalizedSlugs,
 }: {
   category: string;
   sort?: string;
   search?: string;
   params: "homepage" | "products";
   page?: number;
-  personalizedSlugs?: string[];
 }) => {
   const currentPage = page ?? 1;
   const products    = await fetchData({ category, sort, search, params, page: currentPage });
@@ -60,9 +57,6 @@ const ProductList = async ({
 
   return (
     <div className="w-full">
-      {params === "homepage" && !search && (
-        <Categories personalizedSlugs={personalizedSlugs} limit={5} />
-      )}
       {params === "products" && <Filter />}
 
       {products.length === 0 ? (
